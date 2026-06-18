@@ -15,6 +15,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://blogapp-cnu1.onrender.com",
+      "https://blog-app-mu-gray-76.vercel.app",
       process.env.CLIENT_URL,
     ].filter(Boolean),
     credentials: true,
