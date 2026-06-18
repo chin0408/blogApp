@@ -10,7 +10,16 @@ const commentRoutes = require("./routes/commentRoutes");
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://blogapp-cnu1.onrender.com",
+      process.env.CLIENT_URL,
+    ].filter(Boolean),
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Routes
