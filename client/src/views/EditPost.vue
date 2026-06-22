@@ -40,6 +40,7 @@
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { postsAPI } from "../services/api";
+import { useAuthStore } from "../stores/auth";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
@@ -49,6 +50,7 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
+    const authStore = useAuthStore();
     const form = ref({ title: "", content: "" });
     const loading = ref(false);
     const error = ref(null);
@@ -69,6 +71,12 @@ export default {
     ];
 
     const fetchPost = async () => {
+      // Redirect admin users - they can only delete posts
+      if (authStore.isAdmin) {
+        router.push("/");
+        return;
+      }
+
       loading.value = true;
       try {
         const response = await postsAPI.getById(route.params.id);

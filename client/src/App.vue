@@ -6,7 +6,7 @@
         <div class="nav-links">
           <router-link to="/">Blog</router-link>
           <template v-if="authStore.isAuthenticated">
-            <router-link to="/create">New Post</router-link>
+            <router-link v-if="!authStore.isAdmin" to="/create">New Post</router-link>
             <span class="nav-user">Hi, {{ authStore.currentUser?.username }}</span>
             <button @click="logout" class="btn-logout">Logout</button>
           </template>

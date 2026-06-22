@@ -35,9 +35,10 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { postsAPI } from "../services/api";
+import { useAuthStore } from "../stores/auth";
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 
@@ -46,9 +47,17 @@ export default {
   components: { QuillEditor },
   setup() {
     const router = useRouter();
+    const authStore = useAuthStore();
     const form = ref({ title: "", content: "" });
     const loading = ref(false);
     const error = ref(null);
+
+    // Redirect admin users - they can only delete posts
+    onMounted(() => {
+      if (authStore.isAdmin) {
+        router.push("/");
+      }
+    });
 
     const titleToolbar = [
       ["bold", "italic", "underline"],

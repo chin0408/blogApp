@@ -1,9 +1,17 @@
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 
-// Create a new post
+// Create a new post (regular users only, not admin)
 const createPost = async (req, res) => {
   try {
+    // Admin can only delete posts, not create
+    if (req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin users cannot create posts. Admin can only delete posts.",
+      });
+    }
+
     const { title, content } = req.body;
 
     if (!title || !content) {
@@ -89,9 +97,17 @@ const getPostById = async (req, res) => {
   }
 };
 
-// Update a post (only the author can update)
+// Update a post (only the author can update, admin cannot update)
 const updatePost = async (req, res) => {
   try {
+    // Admin can only delete posts, not update
+    if (req.user.isAdmin) {
+      return res.status(403).json({
+        success: false,
+        message: "Admin users cannot update posts. Admin can only delete posts.",
+      });
+    }
+
     const post = await Post.findById(req.params.id);
 
     if (!post) {
