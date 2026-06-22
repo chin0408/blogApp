@@ -1,5 +1,5 @@
 {
-    "url": "",
+    "url": "https://blog-app-mu-gray-76.vercel.app/",
     "endpoints": {
         "register": "/register",
         "login": "/login",
